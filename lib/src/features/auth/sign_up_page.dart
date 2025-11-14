@@ -12,7 +12,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>(); // Llave global para validar
-  
+
   // Controladores
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -51,9 +51,9 @@ class _SignUpPageState extends State<SignUpPage> {
               duration: Duration(seconds: 5),
             ),
           );
-          
+
           // Regresamos al Login para que el usuario espere su confirmación
-          Navigator.of(context).pop(); 
+          Navigator.of(context).pop();
         }
       }
     } on AuthException catch (error) {
@@ -65,7 +65,10 @@ class _SignUpPageState extends State<SignUpPage> {
     } catch (error) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error inesperado: $error'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text('Error inesperado: $error'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } finally {
@@ -77,7 +80,10 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Crear Cuenta', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Crear Cuenta',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -90,11 +96,16 @@ class _SignUpPageState extends State<SignUpPage> {
               _buildLabel('Nombre Completo'),
               TextFormField(
                 controller: _nameController,
-                textCapitalization: TextCapitalization.words, // Pone mayúscula inicial
+                textCapitalization:
+                    TextCapitalization.words, // Pone mayúscula inicial
                 decoration: _inputDecoration('Ej: Sofia Ramirez'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'El nombre es obligatorio';
-                  if (value.length < 3) return 'El nombre es muy corto';
+                  if (value == null || value.isEmpty) {
+                    return 'El nombre es obligatorio';
+                  }
+                  if (value.length < 3) {
+                    return 'El nombre es muy corto';
+                  }
                   return null;
                 },
               ),
@@ -106,10 +117,16 @@ class _SignUpPageState extends State<SignUpPage> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: _inputDecoration('Ej: sofia@email.com'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'El email es obligatorio';
+                  if (value == null || value.isEmpty) {
+                    return 'El email es obligatorio';
+                  }
                   // Regex Profesional para Email
-                  final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                  if (!emailRegex.hasMatch(value)) return 'Ingresa un correo válido (ej: usuario@dominio.com)';
+                  final emailRegex = RegExp(
+                    r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                  );
+                  if (!emailRegex.hasMatch(value)) {
+                    return 'Ingresa un correo válido (ej: usuario@dominio.com)';
+                  }
                   return null;
                 },
               ),
@@ -121,11 +138,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 keyboardType: TextInputType.number, // Teclado numérico
                 decoration: _inputDecoration('Ej: 9991234567'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'El teléfono es obligatorio';
+                  if (value == null || value.isEmpty) {
+                    return 'El teléfono es obligatorio';
+                  }
                   // Regex: Solo números
                   final numberRegex = RegExp(r'^[0-9]+$');
-                  if (!numberRegex.hasMatch(value)) return 'Solo se permiten números (sin guiones ni espacios)';
-                  if (value.length != 10) return 'El teléfono debe tener 10 dígitos exactos';
+                  if (!numberRegex.hasMatch(value)) {
+                    return 'Solo se permiten números (sin guiones ni espacios)';
+                  }
+                  if (value.length != 10) {
+                    return 'El teléfono debe tener 10 dígitos exactos';
+                  }
                   return null;
                 },
               ),
@@ -137,16 +160,27 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: true,
                 decoration: _inputDecoration('********'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'La contraseña es obligatoria';
-                  if (value.length < 8) return 'Mínimo 8 caracteres';
-                  if (!value.contains(RegExp(r'[0-9]'))) return 'Debe contener al menos un número';
-                  if (!value.contains(RegExp(r'[A-Z]'))) return 'Debe contener al menos una mayúscula';
+                  if (value == null || value.isEmpty) {
+                    return 'La contraseña es obligatoria';
+                  }
+                  if (value.length < 8) {
+                    return 'Mínimo 8 caracteres';
+                  }
+                  if (!value.contains(RegExp(r'[0-9]'))) {
+                    return 'Debe contener al menos un número';
+                  }
+                  if (!value.contains(RegExp(r'[A-Z]'))) {
+                    return 'Debe contener al menos una mayúscula';
+                  }
                   return null;
                 },
               ),
               const SizedBox(height: 4),
-              Text('Requisito: 8 caracteres, 1 número, 1 mayúscula.', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
-              
+              Text(
+                'Requisito: 8 caracteres, 1 número, 1 mayúscula.',
+                style: TextStyle(color: Colors.grey[600], fontSize: 12),
+              ),
+
               const SizedBox(height: 16),
 
               _buildLabel('Confirmar Contraseña'),
@@ -155,8 +189,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: true,
                 decoration: _inputDecoration('********'),
                 validator: (value) {
-                  if (value == null || value.isEmpty) return 'Confirma tu contraseña';
-                  if (value != _passwordController.text) return 'Las contraseñas no coinciden';
+                  if (value == null || value.isEmpty) {
+                    return 'Confirma tu contraseña';
+                  }
+                  if (value != _passwordController.text) {
+                    return 'Las contraseñas no coinciden';
+                  }
                   return null;
                 },
               ),
@@ -171,14 +209,29 @@ class _SignUpPageState extends State<SignUpPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0A7AFF),
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                  child: _isLoading 
-                    ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-                    : const Text('Crear Cuenta', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                          'Crear Cuenta',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                 ),
               ),
-              
+
               const SizedBox(height: 20),
               const Center(
                 child: Text(

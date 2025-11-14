@@ -40,9 +40,13 @@ class _LoginPageState extends State<LoginPage> {
         }
       }
     } on AuthException catch (error) {
-      if (mounted) context.showSnackBar(error.message, isError: true);
+      if (mounted) {
+        context.showSnackBar(error.message, isError: true);
+      }
     } catch (error) {
-      if (mounted) context.showSnackBar('Ocurrió un error inesperado', isError: true);
+      if (mounted) {
+        context.showSnackBar('Ocurrió un error inesperado', isError: true);
+      }
     } finally {
       if (mounted) {
         setState(() {
@@ -54,6 +58,9 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     // CORRECCIÓN: Usamos Center + SingleChildScrollView para evitar el error del teclado
     return Scaffold(
       appBar: AppBar(
@@ -69,15 +76,17 @@ class _LoginPageState extends State<LoginPage> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.06),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // INPUT: CORREO
-              const Text('Correo electrónico o nombre de usuario', 
-                  style: TextStyle(fontWeight: FontWeight.w500)),
-              const SizedBox(height: 8),
+              const Text(
+                'Correo electrónico o nombre de usuario',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: screenHeight * 0.01),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
@@ -86,12 +95,14 @@ class _LoginPageState extends State<LoginPage> {
                 keyboardType: TextInputType.emailAddress,
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: screenHeight * 0.03),
 
               // INPUT: CONTRASEÑA
-              const Text('Contraseña', 
-                  style: TextStyle(fontWeight: FontWeight.w500)),
-              const SizedBox(height: 8),
+              const Text(
+                'Contraseña',
+                style: TextStyle(fontWeight: FontWeight.w500),
+              ),
+              SizedBox(height: screenHeight * 0.01),
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
@@ -100,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
 
-              const SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
 
               // ROW: RECORDARME + OLVIDASTE CONTRASEÑA
               Row(
@@ -111,7 +122,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: Checkbox(
                       value: _rememberMe,
                       activeColor: Theme.of(context).primaryColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4),
+                      ),
                       onChanged: (value) {
                         setState(() {
                           _rememberMe = value ?? false;
@@ -120,51 +133,73 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  const Text('Recordarme'),
-                  const Spacer(), // Este Spacer sí funciona aquí porque está dentro de un Row con ancho fijo
-                 // ... dentro del Row del final ...
+                  Flexible(
+                    child: const Text(
+                      'Recordarme',
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                    ),
+                  ),
+                  const SizedBox(width: 16), // Espacio entre los textos
                   GestureDetector(
                     onTap: () {
                       // CAMBIO: Navegar a la pantalla de registro
                       Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => const SignUpPage()),
+                        MaterialPageRoute(
+                          builder: (context) => const SignUpPage(),
+                        ),
                       );
                     },
-                    child: Text(
-                      'Regístrate',
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
+                    child: Flexible(
+                      child: Text(
+                        'Regístrate',
+                        style: TextStyle(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
                       ),
                     ),
                   ),
-                  // ...
                 ],
               ),
 
-              const SizedBox(height: 32),
+              SizedBox(height: screenHeight * 0.04),
 
               // BOTÓN: INICIAR SESIÓN
-              ElevatedButton(
-                onPressed: _isLoading ? null : _signIn,
-                child: _isLoading 
-                    ? const SizedBox(
-                        height: 20, width: 20, 
-                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2)
-                      )
-                    : const Text('Iniciar sesión'),
+              SizedBox(
+                width: double.infinity,
+                height: screenHeight * 0.06,
+                child: ElevatedButton(
+                  onPressed: _isLoading ? null : _signIn,
+                  child: _isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text('Iniciar sesión'),
+                ),
               ),
 
-              const SizedBox(height: 40), // Espacio fijo en lugar de Spacer vertical
-
+              SizedBox(
+                height: screenHeight * 0.05,
+              ), // Espacio fijo en lugar de Spacer vertical
               // FOOTER: REGISTRARSE
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('¿No tienes una cuenta? ', style: TextStyle(color: Colors.grey)),
+                  const Text(
+                    '¿No tienes una cuenta? ',
+                    style: TextStyle(color: Colors.grey),
+                  ),
                   GestureDetector(
                     onTap: () {
-                       context.showSnackBar('Ir a pantalla de registro');
+                      context.showSnackBar('Ir a pantalla de registro');
                     },
                     child: Text(
                       'Regístrate',
@@ -182,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  
+
   @override
   void dispose() {
     _emailController.dispose();

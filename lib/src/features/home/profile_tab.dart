@@ -29,7 +29,7 @@ class _ProfileTabState extends State<ProfileTab> {
           .select()
           .eq('id', userId)
           .single();
-      
+
       if (mounted) {
         setState(() {
           _profileData = data;
@@ -68,42 +68,67 @@ class _ProfileTabState extends State<ProfileTab> {
           child: CircleAvatar(
             radius: 50,
             backgroundColor: Colors.orange[100],
-            child: Text(name[0].toUpperCase(), style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.orange)),
+            child: Text(
+              name[0].toUpperCase(),
+              style: const TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 15),
-        Center(child: Text(name, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold))),
-        const Center(child: Text("Cliente", style: TextStyle(color: Colors.grey))),
-        
+        Center(
+          child: Text(
+            name,
+            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+          ),
+        ),
+        const Center(
+          child: Text("Cliente", style: TextStyle(color: Colors.grey)),
+        ),
+
         const SizedBox(height: 30),
-        
-        const Text("Información Personal", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+
+        const Text(
+          "Información Personal",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 10),
-        
-        _InfoCard(Icons.email, "Email", email),
+
+        _infoCard(Icons.email, "Email", email),
         const SizedBox(height: 10),
-        _InfoCard(Icons.phone, "Teléfono", phone),
-        
+        _infoCard(Icons.phone, "Teléfono", phone),
+
         const SizedBox(height: 40),
-        
+
         SizedBox(
           width: double.infinity,
           height: 50,
           child: OutlinedButton.icon(
             onPressed: _logout,
             icon: const Icon(Icons.logout, color: Colors.red),
-            label: const Text("Cerrar Sesión", style: TextStyle(color: Colors.red)),
-            style: OutlinedButton.styleFrom(side: const BorderSide(color: Colors.red)),
+            label: const Text(
+              "Cerrar Sesión",
+              style: TextStyle(color: Colors.red),
+            ),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.red),
+            ),
           ),
-        )
+        ),
       ],
     );
   }
 
-  Widget _InfoCard(IconData icon, String title, String value) {
+  Widget _infoCard(IconData icon, String title, String value) {
     return Container(
       padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Row(
         children: [
           Icon(icon, color: Colors.blue),
@@ -111,10 +136,13 @@ class _ProfileTabState extends State<ProfileTab> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+              Text(
+                title,
+                style: const TextStyle(color: Colors.grey, fontSize: 12),
+              ),
               Text(value, style: const TextStyle(fontWeight: FontWeight.bold)),
             ],
-          )
+          ),
         ],
       ),
     );

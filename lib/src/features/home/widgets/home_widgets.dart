@@ -11,7 +11,11 @@ class SolicitarServicioButton extends StatelessWidget {
       height: 55,
       child: ElevatedButton.icon(
         onPressed: () {},
-        icon: const Icon(Icons.add_circle_outline, color: Colors.white, size: 28),
+        icon: const Icon(
+          Icons.add_circle_outline,
+          color: Colors.white,
+          size: 28,
+        ),
         label: const Text(
           'Solicitar un Servicio',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -20,7 +24,9 @@ class SolicitarServicioButton extends StatelessWidget {
           backgroundColor: const Color(0xFF0A7AFF), // Azul Mublean
           foregroundColor: Colors.white,
           elevation: 4,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
         ),
       ),
     );
@@ -37,7 +43,9 @@ class ProximaCitaCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))],
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +63,13 @@ class ProximaCitaCard extends StatelessWidget {
                 children: [
                   Icon(Icons.weekend, size: 50, color: Colors.white),
                   SizedBox(height: 5),
-                  Text("Limpieza de Sala", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))
+                  Text(
+                    "Limpieza de Sala",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -65,24 +79,47 @@ class ProximaCitaCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('PRÓXIMA CITA', style: TextStyle(color: Color(0xFF0A7AFF), fontWeight: FontWeight.bold, letterSpacing: 1)),
+                const Text(
+                  'PRÓXIMA CITA',
+                  style: TextStyle(
+                    color: Color(0xFF0A7AFF),
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1,
+                  ),
+                ),
                 const SizedBox(height: 5),
-                const Text('Limpieza de Sofá', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87)),
+                const Text(
+                  'Limpieza de Sofá',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                Text('Martes, 28 de Octubre\n10:00 AM', style: TextStyle(color: Colors.grey[700], fontSize: 15, height: 1.4)),
+                Text(
+                  'Martes, 28 de Octubre\n10:00 AM',
+                  style: TextStyle(
+                    color: Colors.grey[700],
+                    fontSize: 15,
+                    height: 1.4,
+                  ),
+                ),
                 const SizedBox(height: 15),
                 Align(
                   alignment: Alignment.centerRight,
                   child: ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF0A7AFF), 
+                      backgroundColor: const Color(0xFF0A7AFF),
                       foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                     child: const Text('Ver Detalles'),
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -103,8 +140,12 @@ class CotizacionCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFFFA000).withOpacity(0.3)), // Borde naranja sutil
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4))],
+        border: Border.all(
+          color: const Color(0xFFFFA000).withAlpha((255 * 0.3).round()),
+        ), // Borde naranja sutil
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 8, offset: Offset(0, 4)),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,11 +154,24 @@ class CotizacionCard extends StatelessWidget {
             children: [
               Icon(Icons.warning_amber_rounded, color: Color(0xFFFFA000)),
               SizedBox(width: 8),
-              Text('COTIZACIÓN PENDIENTE', style: TextStyle(color: Color(0xFFFFA000), fontWeight: FontWeight.bold)),
+              Text(
+                'COTIZACIÓN PENDIENTE',
+                style: TextStyle(
+                  color: Color(0xFFFFA000),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 10),
-          const Text('Lavado de Alfombras', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black87)),
+          const Text(
+            'Lavado de Alfombras',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
           const SizedBox(height: 5),
           const Text('#MC-12045', style: TextStyle(color: Colors.grey)),
           const SizedBox(height: 15),
@@ -128,7 +182,9 @@ class CotizacionCard extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFFFFA000),
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               child: const Text('Revisar y Aprobar'),
             ),
@@ -154,7 +210,9 @@ class QuickAccessItem extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2))],
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 4, offset: Offset(0, 2)),
+        ],
       ),
       child: Row(
         children: [
@@ -170,10 +228,18 @@ class QuickAccessItem extends StatelessWidget {
           Expanded(
             child: Text(
               title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black87),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
+              ),
             ),
           ),
-          const Icon(Icons.arrow_forward_ios_rounded, size: 18, color: Colors.grey),
+          const Icon(
+            Icons.arrow_forward_ios_rounded,
+            size: 18,
+            color: Colors.grey,
+          ),
         ],
       ),
     );
