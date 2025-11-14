@@ -52,7 +52,8 @@ class QuickAccessItem extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: const Color(0xFF0A7AFF).withOpacity(0.1),
+            // ignore: deprecated_member_use
+            color: const Color(0xFF0A7AFF).withOpacity(0.1), // Ya está bien
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(icon, color: const Color(0xFF0A7AFF)),
