@@ -1,16 +1,17 @@
+// lib/src/features/home/home_page.dart
 import 'package:flutter/material.dart';
+// import 'package:supabase_flutter/supabase_flutter.dart'; // ✨ BORRADO: Esta línea causaba el conflicto
 import 'package:mubclean/main.dart'; // Importa 'main.dart' para la variable global 'supabase'
-import 'package:mubclean/src/features/home/widgets/home_widgets.dart'; // Asegúrate que esté importado
+import 'package:mubclean/src/features/home/widgets/home_widgets.dart';
 import 'package:mubclean/src/features/home/profile_tab.dart';
 
-// --- NUEVO IMPORT para la imagen del logo ---
+// --- IMPORTS COMBINADOS (Tus cambios + los de tu compañero) ---
 import 'package:flutter/services.dart'
     show rootBundle; // Importa 'rootBundle' para cargar assets
 import 'dart:typed_data';
-import 'dart:ui' as ui; // Para el asset de imagen
-
-// ✨ --- 1. IMPORT DE LA NUEVA PANTALLA DE COTIZACIÓN ---
-import 'package:mubclean/src/features/quotation/screens/furniture_select_screen.dart';
+import 'dart:ui' as ui; // Para el asset de imagen (Tuyo)
+import 'package:mubclean/src/features/quotation/screens/furniture_select_screen.dart'; // (Tuyo)
+import 'package:mubclean/src/features/history/history_page.dart'; // (De tu compañero)
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,19 +23,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0; // 0: Inicio, 1: Historial, 2: Perfil
   String _userName = 'Usuario';
+  
+  // ✨ TU CAMBIO (Logo)
   ui.Image? _logoImage; // Variable para cargar el logo
 
   @override
   void initState() {
     super.initState();
     _loadUserName();
-    _loadLogoAsset(); // Cargar el logo al iniciar
+    _loadLogoAsset(); // ✨ TU CAMBIO (Cargar el logo al iniciar)
   }
 
-  // Cargar el nombre del usuario
+  // Cargar el nombre del usuario desde Supabase
   Future<void> _loadUserName() async {
     try {
-      final userId = supabase.auth.currentUser?.id;
+      // Ahora 'supabase' se refiere sin ambigüedad al de 'main.dart'
+      final userId = supabase.auth.currentUser?.id; 
       if (userId != null) {
         final data = await supabase
             .from('profiles')
@@ -50,11 +54,11 @@ class _HomePageState extends State<HomePage> {
         }
       }
     } catch (e) {
-      // Manejar error o dejar nombre por defecto
+      // Si falla, se queda como 'Usuario'
     }
   }
 
-  // Cargar el logo de la empresa
+  // ✨ TU CAMBIO (Función para cargar el logo)
   Future<void> _loadLogoAsset() async {
     // Asegúrate que la ruta 'assets/mubclean_logo.png' exista en tu pubspec.yaml
     try {
@@ -68,79 +72,57 @@ class _HomePageState extends State<HomePage> {
         });
       }
     } catch (e, st) {
-      debugPrint(
-        "Error al cargar el logo: $e\n$st",
-      ); // Usar debugPrint para depuración
+      debugPrint("Error al cargar el logo: $e\n$st");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
+    // Usamos el código de tu compañero para el AppBar (es más limpio)
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F7),
-
-      appBar: AppBar(
+      
+      // Lógica de tu compañero (buena idea):
+      // Solo mostramos el AppBar si estamos en la pestaña 0 (Inicio)
+      appBar: _selectedIndex == 0 ? AppBar(
         backgroundColor: const Color(0xFFF5F5F7),
         elevation: 0,
-        toolbarHeight: screenHeight * 0.1,
+        toolbarHeight: 80,
         automaticallyImplyLeading: false,
-        title: _selectedIndex == 0
-            ? Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: const BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: CircleAvatar(
-                      radius: screenWidth * 0.06,
-                      backgroundColor: const Color(0xFF0A7AFF),
-                      child: Icon(Icons.person, color: Colors.white, size: screenWidth * 0.07),
-                    ),
-                  ),
-                  SizedBox(width: screenWidth * 0.04),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Hola,',
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
-                      ),
-                      Text(
-                        _userName,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            : Text(
-                _getAppBarTitle(),
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(2),
+              decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+              child: const CircleAvatar(
+                radius: 24,
+                backgroundColor: Color(0xFF0A7AFF),
+                child: Icon(Icons.person, color: Colors.white, size: 30),
               ),
-        actions: [
-          // Icono de Notificaciones
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.notifications_none_rounded,
-              color: Colors.black87,
-              size: 28,
             ),
+            const SizedBox(width: 15),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Hola,', style: TextStyle(color: Colors.grey, fontSize: 14)),
+                Text(_userName, style: const TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            onPressed: (){},
+            icon: const Icon(Icons.notifications_none_rounded, color: Colors.black87, size: 28),
           ),
-          SizedBox(width: screenWidth * 0.02), // Espacio
+          const SizedBox(width: 10),
         ],
+      ) 
+      // Si no es la pestaña 0, creamos un AppBar diferente
+      : AppBar(
+          title: Text(_getAppBarTitle()),
+          centerTitle: true,
+          elevation: 1,
       ),
 
       body: _getSelectedView(),
@@ -152,14 +134,8 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _selectedIndex,
         onTap: (index) => setState(() => _selectedIndex = index),
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Inicio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'Historial',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Inicio'),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'Historial'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
         ],
       ),
@@ -167,87 +143,93 @@ class _HomePageState extends State<HomePage> {
   }
 
   String _getAppBarTitle() {
+    // Esta función solo se usa si _selectedIndex != 0
     switch (_selectedIndex) {
-      case 1:
-        return 'Historial de Servicios';
-      case 2:
-        return 'Mi Perfil';
-      default:
-        return '';
+      case 1: return 'Historial de Servicios';
+      case 2: return 'Mi Perfil';
+      default: return '';
     }
   }
 
+  // --- VISTA COMBINADA ---
   Widget _getSelectedView() {
     switch (_selectedIndex) {
       case 0:
-        return HomeContent(
-          logoImage: _logoImage,
-        ); // Pasamos el logo al HomeContent
+        // ✨ TU CAMBIO: Pasamos el logo a HomeContent
+        return HomeContent(logoImage: _logoImage); 
       case 1:
-        return const Center(child: Text("Aquí verás tus servicios anteriores"));
+        // ✨ CAMBIO DE TU COMPAÑERO: Mostramos la pág. de Historial
+        // Si esta línea da error, ¡revisa el import de la línea 15!
+        return const HistoryPage();
       case 2:
         return const ProfileTab();
       default:
+        // ✨ TU CAMBIO: Pasamos el logo a HomeContent
         return HomeContent(logoImage: _logoImage);
     }
   }
 }
 
-// --- CONTENIDO DEL HOME MEJORADO ---
+// --- CONTENIDO DEL HOME (COMBINADO Y LIMPIADO) ---
 class HomeContent extends StatelessWidget {
-  final ui.Image? logoImage; // Recibimos el logo
+  // ✨ TU CAMBIO: Aceptamos el logo
+  final ui.Image? logoImage; 
 
   const HomeContent({super.key, this.logoImage});
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return ListView(
-      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenHeight * 0.02),
+      padding: const EdgeInsets.all(20),
       children: [
-        // 1. LOGO DE LA EMPRESA (Si está cargado)
+        
+        // ✨ TU CAMBIO: Mostramos el logo si existe
         if (logoImage != null)
           Align(
             alignment: Alignment.center,
             child: SizedBox(
-              width: screenWidth * 0.3, // Ajusta el tamaño del logo
-              height: screenWidth * 0.3,
+              width: 120, // Tamaño fijo (más simple)
+              height: 120,
               child: RawImage(image: logoImage, fit: BoxFit.contain),
             ),
+          )
+        else
+          // Fallback si el logo no ha cargado (como en el código de tu compañero)
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: 120,
+              height: 120,
+              // Asegúrate que esta ruta exista en tu pubspec.yaml
+              // Tu compañero usa 'assets/image/Logo.png'
+              child: Image.asset('assets/image/Logo.png', fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) => 
+                  const Icon(Icons.image, size: 100, color: Colors.grey),
+              ), 
+            ),
           ),
-        SizedBox(height: screenHeight * 0.01),
-
-        // 2. IMAGEN VISTOSA CENTRAL
-        // Asegúrate de tener esta imagen en 'assets/cleaning_image.png'
+        
+        const SizedBox(height: 10),
+        
+        // Imagen de Mueble (de tu compañero)
         Image.asset(
-          'assets/cleaning_image.png',
-          height: screenHeight * 0.2,
-          // Manejo de error si la imagen no se encuentra
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              height: screenHeight * 0.2,
-              color: Colors.grey[200],
-              child: const Center(child: Text('Imagen no encontrada')),
-            );
-          },
+          'assets/image/Mueble.png', 
+          height: 150,
+          errorBuilder: (context, error, stackTrace) => 
+            const Icon(Icons.image, size: 100, color: Colors.grey),
         ),
-        SizedBox(height: screenHeight * 0.02),
+        
+        const SizedBox(height: 15),
 
-        Center(
+        const Center(
           child: Column(
             children: [
-              const Text(
+              Text(
                 "¡Estamos listos para limpiar!",
-                style: TextStyle(
-                  color: Colors.black87,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(color: Colors.black87, fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: screenHeight * 0.005),
-              const Text(
+              SizedBox(height: 5),
+              Text(
                 "Cotiza tu servicio de limpieza en segundos.",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey, fontSize: 14),
@@ -256,35 +238,24 @@ class HomeContent extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: screenHeight * 0.05), // Espacio
+        const SizedBox(height: 40),
+
         // 3. SECCIÓN AYUDA Y SOPORTE
-        const Text(
-          "Ayuda y Soporte",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        SizedBox(height: screenHeight * 0.02),
-
-        const QuickAccessItem(
-          icon: Icons.support_agent_rounded,
-          title: "Contactar Soporte",
-        ),
-        const QuickAccessItem(
-          icon: Icons.info_outline,
-          title: "Preguntas Frecuentes",
-        ),
-
-        // ✨ --- INICIO DE LA CORRECCIÓN --- ✨
-        // El código que pegaste estaba mal ubicado. Esta es la posición correcta,
-        // después de los "QuickAccessItem".
+        const Text("Ayuda y Soporte", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 15),
+        
+        const QuickAccessItem(icon: Icons.support_agent_rounded, title: "Contactar Soporte"),
+        const QuickAccessItem(icon: Icons.info_outline, title: "Preguntas Frecuentes"),
+        
+        const SizedBox(height: 40),
 
         // 4. BOTÓN "COTIZAR UN SERVICIO"
-        SizedBox(height: screenHeight * 0.05), // Espacio
-
+        // ✨ TU CAMBIO: Botón que NAVEGA (limpié el código duplicado)
         SizedBox(
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              // ✨ --- AQUÍ ESTÁ LA NAVEGACIÓN ---
+              // Navegamos a tu pantalla
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -294,10 +265,8 @@ class HomeContent extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF0A7AFF),
-              padding: EdgeInsets.symmetric(vertical: screenHeight * 0.018),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
             child: const Text(
               'Cotizar un Servicio',
@@ -307,11 +276,10 @@ class HomeContent extends StatelessWidget {
                 color: Colors.white, // Aseguramos que el texto sea blanco
               ),
             ),
-          ), // Cierre del ElevatedButton
-        ), // Cierre del SizedBox
-
-        // ✨ --- FIN DE LA CORRECCIÓN --- ✨
-        SizedBox(height: screenHeight * 0.025),
+          ), 
+        ), 
+        
+        const SizedBox(height: 20),
       ],
     );
   }
