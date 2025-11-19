@@ -71,3 +71,4 @@ class QuickAccessItem extends StatelessWidget {
     );
   }
 }
+
